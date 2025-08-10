@@ -1,16 +1,37 @@
 // O describe é um bloco de teste que agrupa os testes
 // O it é um bloco de teste que define um teste
+// O .only executa apenas o teste que está com o .only
+// O .skip pula o teste que está com o .skip
+// O .pend adiciona o teste ao relatório, mas não executa
+
 
 describe('Login', () => {
   it('Deve fazer login com sucesso', () => {
-    cy.viewport(1366, 768)
-    cy.visit('http://localhost:3000')
+    cy.startTest()
+    cy.submitLogin('papito@webdojo.com', 'katana123')
 
-    cy.get('#email').type('papito@webdojo.com')
-    cy.get('#password').type('katana123')
+    cy.get('[data-cy="user-name"]')
+      .should('be.visible')
+      .and('have.text', 'Fernando Papito')
 
-    cy.contains('button', 'Entrar').click()
+    cy.get('[data-cy="welcome-message"]')
+      .should('be.visible')
+      .and('have.text', 'Olá QA, esse é o seu Dojo para aprender Automação de Testes.')
+  })
 
-    cy.wait(3000)
+  it('Não deve logar com senha inválida', () => {
+    cy.startTest()
+    cy.submitLogin('papito@webdojo.com', 'katana321')
+
+    cy.contains('Acesso negado! Tente novamente.')
+      .should('be.visible')
+  })
+
+  it('Não deve logar com email não cadastrado', () => {
+    cy.startTest()
+    cy.submitLogin('404@webdojo.com', 'katana123')
+
+    cy.contains('Acesso negado! Tente novamente.')
+      .should('be.visible')
   })
 })
