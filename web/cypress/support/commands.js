@@ -45,9 +45,35 @@ Cypress.Commands.add('goTo', (buttonName, pageTitle) => {
     .should('be.visible')
 })
 
-Cypress.Commands.add('fillForm', (name, email, phone, consultancyType) => {
-  cy.get('#name').type(name)
-  cy.get('#email').type(email)
-  cy.get('#phone').type(phone)
-  cy.get('#consultancyType').select(consultancyType)
+Cypress.Commands.add('fillForm', (name, email, phone, consultancyType, personType) => {
+  cy.get('input[placeholder="Digite seu nome completo"]').type(name)
+  cy.get('input[placeholder="Digite seu email"]').type(email)
+  cy.get('input[placeholder="(00) 00000-0000"]')
+    .type(phone)
+    .should('have.value', '(11) 99999-9999')
+  cy.contains('label', 'Tipo de Consultoria')
+    .parent()
+    .find('select')
+    .select(consultancyType)
+
+  cy.contains('label', personType)
+    .find('input')
+    .check()
+    .should('be.checked')
+
+  cy.contains('label', 'Pessoa Jurídica')
+    .find('input')
+    .should('not.be.checked')
+
+  cy.contains('label', 'CPF')
+    .parent()
+    .find('input')
+    .type('72346145084')
+    .should('have.value', '723.461.450-84')
+
+  cy.contains('label', 'CNPJ')
+    .parent()
+    .find('input')
+    .type('41447343000186')
+    .should('have.value', '41.447.343/0001-86')
 })

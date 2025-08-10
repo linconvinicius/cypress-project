@@ -5,7 +5,7 @@ describe('Formulario de Consultoria', () => {
 
         cy.goTo('Formulários', 'Consultoria')
 
-        cy.fillForm('Lincon Vinicius', 'lincon@gmail.com', '11999999999', 'individual')
+        cy.fillForm('Lincon Vinicius', 'lincon@gmail.com', '11999999999', 'Individual', 'Pessoa Física')
 
     })
 })
