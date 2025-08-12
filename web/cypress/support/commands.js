@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import 'cypress-real-events'
+
 Cypress.Commands.add('startTest', () => {
   cy.viewport(1366, 768)
   cy.visit('http://localhost:3000')
