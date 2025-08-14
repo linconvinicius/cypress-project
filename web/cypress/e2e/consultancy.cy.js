@@ -111,7 +111,7 @@ describe("Formulario de Consultoria", () => {
       .and('have.text', 'Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.')
   });
 
-it.only("Deve solicitar consultoria In Company", () => {
+it("Deve solicitar consultoria In Company", () => {
 
     const consultancyForm = {
       name: 'Lincon Vinicius',
