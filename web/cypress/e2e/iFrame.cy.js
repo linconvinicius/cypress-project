@@ -1,7 +1,6 @@
 describe('iFrame', () => {
     it('Clica no vídeo do youtube e dá play', () => {
-        cy.startTest()
-        cy.submitLogin('papito@webdojo.com', 'katana123')
+        cy.login();
 
         cy.contains('Video').click()
 

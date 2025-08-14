@@ -1,8 +1,7 @@
 describe('Kanban Board Tests', () => {
 
   it('Deve mover uma tarefa de ToDo para Done e atualizar o board', () => {
-    cy.startTest();
-    cy.submitLogin('papito@webdojo.com', 'katana123')
+    cy.login();
     cy.contains('Kanban').click();
 
     const dataTransfer = new DataTransfer();

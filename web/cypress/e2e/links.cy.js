@@ -1,7 +1,6 @@
 describe('Links abrem em nova aba', () => {
     it('Validando o atributo do link do instagram', () => {
-        cy.startTest()
-        cy.submitLogin('papito@webdojo.com', 'katana123')
+        cy.login();
 
         cy.get('[data-cy="instagram-link"]')
             .should('have.attr', 'href', 'https://www.instagram.com/qapapito')
