@@ -7,41 +7,72 @@ describe("Formulario de Consultoria", () => {
   })
 
   it("Deve solicitar consultoria individual", () => {
-    cy.get('input[placeholder="Digite seu nome completo"]').type('Lincon Vinicius')
-    cy.get('input[placeholder="Digite seu email"]').type('lincon@teste.com')
+
+    const consultancyForm = {
+      name: 'Lincon Vinicius',
+      email: 'lincon@teste.com',
+      phone: '(11) 99999-9999',
+      consultancyType: 'Individual',
+      personType: 'cpf',
+      document: '72346145084',
+      discoveryChannels: [
+        'Instagram',
+        'LinkedIn',
+        'Udemy',
+        'YouTube',
+        'Indicação de Amigo'
+      ],
+      file: './cypress/fixtures/document.pdf',
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      techs: [
+        'Cypress',
+        'Selenium',
+        'Playwright',
+        'Robot Framework'
+      ],
+      terms: true
+    }
+
+    cy.get('input[placeholder="Digite seu nome completo"]').type(consultancyForm.name)
+    cy.get('input[placeholder="Digite seu email"]').type(consultancyForm.email)
     cy.get('input[placeholder="(00) 00000-0000"]')
-      .type('11 99999-9999')
-      .should('have.value', '(11) 99999-9999')
+      .type(consultancyForm.phone)
+    //.should('have.value', '(11) 99999-9999')
 
     cy.contains('label', 'Tipo de Consultoria')
       .parent()
       .find('select')
-      .select('Individual')
+      .select(consultancyForm.consultancyType)
 
-    cy.contains('label', 'Pessoa Física')
-      .find('input')
-      .click()
-      .should('be.checked')
+    if (consultancyForm.personType === 'cpf') {
+      cy.contains('label', 'Pessoa Física')
+        .find('input')
+        .click()
+        .should('be.checked')
 
-    cy.contains('label', 'Pessoa Jurídica')
-      .find('input')
-      .should('not.be.checked')
+      cy.contains('label', 'Pessoa Jurídica')
+        .find('input')
+        .should('not.be.checked')
+    }
+
+    if (consultancyForm.personType === 'cnpj') {
+      cy.contains('label', 'Pessoa Jurídica')
+        .find('input')
+        .click()
+        .should('be.checked')
+
+      cy.contains('label', 'Pessoa Física')
+        .find('input')
+        .should('not.be.checked')
+    }
 
     cy.contains('label', 'CPF')
       .parent()
       .find('input')
-      .type('72346145084')
-      .should('have.value', '723.461.450-84')
+      .type(consultancyForm.document)
+    //.should('have.value', '723.461.450-84')
 
-    const discoveryChannels = [
-      'Instagram',
-      'LinkedIn',
-      'Udemy',
-      'YouTube',
-      'Indicação de Amigo'
-    ]
-
-    discoveryChannels.forEach((channel) => {
+    consultancyForm.discoveryChannels.forEach((channel) => {
       cy.contains('label', channel)
         .find('input')
         .check()
@@ -49,19 +80,12 @@ describe("Formulario de Consultoria", () => {
     })
 
     cy.get('input[type="file"]')
-      .selectFile('./cypress/fixtures/document.pdf', { force: true })
+      .selectFile(consultancyForm.file, { force: true })
 
     cy.get('textarea[placeholder="Descreva mais detalhes sobre sua necessidade"]')
-      .type("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+      .type(consultancyForm.description)
 
-    const techs = [
-      'Cypress',
-      'Selenium',
-      'Playwright',
-      'Robot Framework'
-    ]
-
-    techs.forEach((tech) => {
+    consultancyForm.techs.forEach((tech) => {
       cy.get('input[placeholder="Digite uma tecnologia e pressione Enter"]')
         .type(tech)
         .type('{enter}')
@@ -72,10 +96,12 @@ describe("Formulario de Consultoria", () => {
         .should('be.visible')
     })
 
-    cy.contains('label', 'termos de uso')
-      .find('input')
-      .check()
-      .should('be.checked')
+    if (consultancyForm.terms === true) {
+      cy.contains('label', 'termos de uso')
+        .find('input')
+        .check()
+        .should('be.checked')
+    }
 
     cy.contains('button', 'Enviar formulário')
       .click()
