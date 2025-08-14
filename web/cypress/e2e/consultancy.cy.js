@@ -1,10 +1,16 @@
 describe("Formulario de Consultoria", () => {
-  it("Deve solicitar consultoria individual", () => {
+    before(() => {
+    cy.log('Iniciando os testes de consultoria');
+  })
+
+  beforeEach(() => {
     cy.startTest();
     cy.submitLogin("papito@webdojo.com", "katana123");
 
     cy.goTo("Formulários", "Consultoria");
+  })
 
+  it("Deve solicitar consultoria individual", () => {
     cy.fillForm(
       "Lincon Vinicius",
       "lincon@gmail.com",
@@ -15,11 +21,6 @@ describe("Formulario de Consultoria", () => {
   });
 
   it("Deve verificar os campos obrigatórios", () => {
-    cy.startTest();
-    cy.submitLogin("papito@webdojo.com", "katana123");
-
-    cy.goTo("Formulários", "Consultoria");
-
     cy.contains("button", "Enviar formulário").click();
 
     cy.contains("label", "Nome Completo")
@@ -45,5 +46,13 @@ describe("Formulario de Consultoria", () => {
       .should("have.text", "Você precisa aceitar os termos de uso")
       .and("have.class", "text-red-400")
       .and("have.css", "color", "rgb(248, 113, 113)");
+  });
+
+  afterEach(() => {
+    cy.log('Finalizando o teste de consultoria');
+  })
+
+  after(() => {
+    cy.log('Todos os testes de consultoria foram concluídos');
   });
 });
