@@ -1,0 +1,44 @@
+{
+  "personal": {
+    "name": "Lincon Vinicius",
+    "email": "lincon@teste.com",
+    "phone": "(11) 99999-9999",
+    "consultancyType": "Individual",
+    "personType": "cpf",
+    "document": "72346145084",
+    "discoveryChannels": [
+      "Instagram",
+      "LinkedIn",
+      "Udemy",
+      "YouTube",
+      "Indicação de Amigo"
+    ],
+    "file": "./cypress/fixtures/document.pdf",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "techs": [
+      "Cypress",
+      "Selenium",
+      "Playwright",
+      "Robot Framework"
+    ],
+    "terms": true
+  },
+  "company": {
+    "name": "Lincon Vinicius",
+    "email": "lincon@teste.com",
+    "phone": "(11) 99999-9999",
+    "consultancyType": "In Company",
+    "personType": "cnpj",
+    "document": "73105579000120",
+    "discoveryChannels": [
+      "LinkedIn"
+    ],
+    "file": "./cypress/fixtures/document.pdf",
+    "description": "Lorem ipsum dolor sit amet.",
+    "techs": [
+      "Cypress",
+      "Selenium"
+    ],
+    "terms": true
+  }
+}
