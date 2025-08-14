@@ -37,7 +37,6 @@ describe("Formulario de Consultoria", () => {
     cy.get('input[placeholder="Digite seu email"]').type(consultancyForm.email)
     cy.get('input[placeholder="(00) 00000-0000"]')
       .type(consultancyForm.phone)
-    //.should('have.value', '(11) 99999-9999')
 
     cy.contains('label', 'Tipo de Consultoria')
       .parent()
@@ -70,7 +69,105 @@ describe("Formulario de Consultoria", () => {
       .parent()
       .find('input')
       .type(consultancyForm.document)
-    //.should('have.value', '723.461.450-84')
+
+    consultancyForm.discoveryChannels.forEach((channel) => {
+      cy.contains('label', channel)
+        .find('input')
+        .check()
+        .should('be.checked')
+    })
+
+    cy.get('input[type="file"]')
+      .selectFile(consultancyForm.file, { force: true })
+
+    cy.get('textarea[placeholder="Descreva mais detalhes sobre sua necessidade"]')
+      .type(consultancyForm.description)
+
+    consultancyForm.techs.forEach((tech) => {
+      cy.get('input[placeholder="Digite uma tecnologia e pressione Enter"]')
+        .type(tech)
+        .type('{enter}')
+
+      cy.contains('label', 'Tecnologias')
+        .parent()
+        .contains('span', tech)
+        .should('be.visible')
+    })
+
+    if (consultancyForm.terms === true) {
+      cy.contains('label', 'termos de uso')
+        .find('input')
+        .check()
+        .should('be.checked')
+    }
+
+    cy.contains('button', 'Enviar formulário')
+      .click()
+
+    cy.get('.modal', { timeout: 7000 })
+      .should('be.visible')
+      .find('.modal-content')
+      .should('be.visible')
+      .and('have.text', 'Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.')
+  });
+
+it.only("Deve solicitar consultoria In Company", () => {
+
+    const consultancyForm = {
+      name: 'Lincon Vinicius',
+      email: 'lincon@teste.com',
+      phone: '(11) 99999-9999',
+      consultancyType: 'In Company',
+      personType: 'cnpj',
+      document: '73105579000120',
+      discoveryChannels: [
+        'LinkedIn',
+      ],
+      file: './cypress/fixtures/document.pdf',
+      description: "Lorem ipsum dolor sit amet.",
+      techs: [
+        'Cypress',
+        'Selenium'
+      ],
+      terms: true
+    }
+
+    cy.get('input[placeholder="Digite seu nome completo"]').type(consultancyForm.name)
+    cy.get('input[placeholder="Digite seu email"]').type(consultancyForm.email)
+    cy.get('input[placeholder="(00) 00000-0000"]')
+      .type(consultancyForm.phone)
+
+    cy.contains('label', 'Tipo de Consultoria')
+      .parent()
+      .find('select')
+      .select(consultancyForm.consultancyType)
+
+    if (consultancyForm.personType === 'cpf') {
+      cy.contains('label', 'Pessoa Física')
+        .find('input')
+        .click()
+        .should('be.checked')
+
+      cy.contains('label', 'Pessoa Jurídica')
+        .find('input')
+        .should('not.be.checked')
+    }
+
+    if (consultancyForm.personType === 'cnpj') {
+      cy.contains('label', 'Pessoa Jurídica')
+        .find('input')
+        .click()
+        .should('be.checked')
+
+      cy.contains('label', 'Pessoa Física')
+        .find('input')
+        .should('not.be.checked')
+    }
+
+    cy.contains('label', 'CNPJ')
+      .parent()
+      .find('input')
+      .type(consultancyForm.document)
 
     consultancyForm.discoveryChannels.forEach((channel) => {
       cy.contains('label', channel)
