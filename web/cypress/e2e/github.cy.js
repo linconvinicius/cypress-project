@@ -80,6 +80,7 @@ describe('Gerenciamento de perfis no GitHub', () => {
 
         cy.get('@trProfile')
             .find('a')
-            .should('have.attr', 'href', 'https://github.com/linconvinicius')
+            .should('have.attr', 'href', 'https://github.com/' + profile.username)
+            .and('have.attr', 'target', '_blank')
     })
 })
